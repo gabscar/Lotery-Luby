@@ -31,25 +31,23 @@
                     selectedNumbers = [];
                     let button =  document.createElement('button');
                     button.setAttribute('class','btn-game-mode');
-                    button.setAttribute('active', 'false')
-                    lotery.buttonGameStyle(button.style,item.color)
-                    
-                    
+                    button.setAttribute('selected', 'false')
+                    lotery.buttonGameStyle(button.style,item.color);      
                     button.innerHTML = item.type;
                     button.addEventListener('click',(evt)=>{
                         evt.preventDefault();
                         console.log(evt.target)
                         button.style.backgroundColor = item.color;
                         button.style.color = '#fff';
-                        button.setAttribute('active','true');
+                        button.setAttribute('selected','true');
                         let listBtn = document.querySelectorAll('.btn-game-mode');
                         listBtn.forEach((item)=>{
                             if(item !== evt.target){
-                                if(item.getAttribute('active') ==='true'){
+                                if(item.getAttribute('selected') ==='true'){
                                     let background = item.style.color;
                                     item.style.color = item.style.backgroundColor;
                                     item.style.backgroundColor = background;
-                                    item.setAttribute('active','false');
+                                    item.setAttribute('selected','false');
                                 }
                                
                                 //console.log(item)
