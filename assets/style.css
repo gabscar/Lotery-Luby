@@ -1,0 +1,302 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,300;1,400;1,500&display=swap');
+
+:root{
+    --white: #f7f7f7;
+    --whiteTrue:#FFF;
+    --gray: #707070;
+    --green: #27c383;
+    --purple: #7f3992;
+    --header: #b5c401;
+    --ligthgray: #868686;
+    --iceGray: #ADC0C4;
+    --red: rgb(250, 0, 0);
+    --cartColor :#E2E2E2;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+    color: var(--gray);
+}
+
+html, body {
+    width: 100%;
+    
+    background:var(--white) 0% 0% no-repeat padding-box;
+    opacity: 1;
+    font-style: italic;
+}
+
+.container {
+    width: 100%;
+}
+/* HEADER CSS */
+header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    margin-top: 0.938rem;
+}
+header .title{
+    display: flex;
+    align-items: center;
+}
+
+header .leftTop{
+    margin-left: 8.813rem;
+}
+
+header .leftTop p{
+    margin-left: 4.625rem;
+    font-size: 1.25rem;
+}
+
+header .leftTop h1{
+    font-size: 2.75rem;
+    border-bottom: 0.375rem solid var(--header);
+}
+
+header .rightTop{
+    margin-right: 12.477rem;
+}
+header .rightTop p:first-child{
+    margin-right: 2.5rem;
+    font-size: 1.25rem;
+}
+
+header .rightTop p:last-child{
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+}
+header .rightTop p:last-child i{
+    margin-left: 0.56rem;
+    font-size: 1.303rem;
+}
+
+@media (max-width:720px) {
+    header .leftTop p{
+      display: none;
+        
+    }
+    header .rightTop{
+        display: none;
+    }
+
+}
+
+
+
+
+/* main  */
+
+
+main {
+    margin: 0 auto;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+@media (max-width:1000px){
+    main{
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+    }
+}
+
+/* Game Panel */
+
+.gameSection{
+    width: 70%;
+    padding-top: 1.5rem;    
+}
+
+.gameSection .gameTitle{
+    display: flex;
+    align-items: center;
+    margin-bottom: 2.063rem;
+}
+
+.gameSection .gameTitle p{
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+}
+
+.gameSection .chooseGame p{
+    color: var(--ligthgray);
+    font-weight: 500;
+    margin-bottom: 1.813rem;
+}
+
+.gameSection .chooseGame .gameMode{
+    display: flex;
+    margin-bottom: 2.25rem;    
+}
+/*  rules  */
+
+.gameSection .rules{
+    
+    width: 70%;
+    color: var(--ligthgray);
+    margin-bottom: 1.688rem;
+}
+.gameSection .rules p:first-child{
+    font-weight: 500;
+}
+.gameSection .rules p:last-child{
+    font-weight: 200;
+}
+
+
+/* game buttons */
+.gameSection .game{
+    width: 90%;
+    margin-top: 1.688rem;
+}
+
+.gameSection .gameNumbers button{
+    padding: 0.75rem 0.75rem 0.75rem 0.75rem;
+    border-radius: 6rem;
+    background-color: var(--iceGray);    
+    color: var(--white);
+    font-weight: 400;
+    cursor: pointer;    
+    border: none;
+    width: 3rem;
+    height: 3rem;
+}
+
+.gameSection .gameNumbers button:hover{
+    background: var(--red) 0% 0% no-repeat padding-box;
+}
+
+/*button actions*/
+
+.gameSection .buttons{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2.25rem;
+}
+
+.gameSection .buttons button{
+    cursor: pointer;
+    background-color: var(--white);
+    border: 2px solid var(--green);
+    font-weight: 500;
+    padding: 1.063rem 1.375rem;
+    color: var(--green);
+    border-radius: 10px;
+    opacity: 1;
+    height: 3.25rem;
+    
+}
+.gameSection .buttons .buttons-left button:first-child{
+    margin-right: 1.563rem;
+}
+
+.gameSection .buttons .right-btn{
+    display: flex;
+    background-color: var(--green);
+    color: var(--white);
+    font-size: 1rem;
+    align-items: center;
+    padding: 1.063rem 1.375rem;
+    height: 3.25rem;
+    width: 13.063rem;
+
+    margin-right: 5%;
+}
+.gameSection .buttons .right-btn i{
+   font-size: 1.5rem;
+   color: #f7f7f7;
+   margin-right: 1.804rem;    
+}
+
+
+/* Cart */
+
+main .cart{
+    height: 29rem;
+    background-color: var(--whiteTrue);
+    border-radius: 0.625rem;
+    border: 1px solid var(--cartColor);
+    width: 20rem;
+    position: relative;
+}
+
+main .cart h2{
+    margin-top: 2rem;
+    margin-left: 1rem;
+}
+
+main .cart .cart-element{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 5.3rem;
+}
+
+main .cart .total-section{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0% 0%;    
+}
+
+main .cart .total-section h2{
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    font-weight: 500;
+}
+main .cart .total-section p{
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-top: 2rem;
+}
+main .cart .save-btn{
+    width: 100%;
+    border: 1px solid var(--cartColor); 
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    position: absolute;
+    height: 6rem;
+    cursor: pointer;
+    bottom: 0rem;       
+    font-size: 2.188rem;
+    color: var(--green);    
+    font-weight: bold;
+}
+main .cart .save-btn i{
+    color: var(--green);
+}
+
+
+
+/*footer*/
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    background: var(--white) 0% 0% no-repeat padding-box;
+
+    padding: .8rem 0rem;
+    border-top: 2px solid var(--cartColor);
+    color: var(--gray);
+    font-style: normal;
+}
+
+
