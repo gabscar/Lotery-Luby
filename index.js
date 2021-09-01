@@ -29,11 +29,55 @@
                 const sectionBtnRules = document.querySelector(".gameMode");
                 const btnClear = document.querySelector("[data-js = btn-clear-game]");
                 const btnRandGame = document.querySelector("[data-js = btn-random-game]");
-
-
+                const btnCart = document.querySelector("[data-js=btn-add-cart]");
+                
                 lotery.selectModel(dataGame,sectionBtnRules);
                 btnClear.addEventListener('click',this.clearBalls);
                 btnRandGame.addEventListener('click',this.randomGame);
+                btnCart.addEventListener('click',(evt)=>{
+                   
+                    const $sectionCart = document.querySelector('[data-js=cart-item]');
+
+                    const $sectionElement = document.createElement('div');
+                    const $rightDiv = document.createElement('div');
+                    const $image = document.createElement('img');
+                    const $btnDelete = document.createElement('button')
+                    const $pNumbers = document.createElement('p');
+                   
+                    $pNumbers.innerHTML = selectedNumbers.join(', ');
+                    
+                    $sectionElement.style.alignItems='center';
+                    $sectionElement.style.justifyContent='space-evenly';
+                    $sectionElement.style.flexDirection = 'row';
+                    $sectionElement.style.display='flex';                  
+                    $sectionElement.style.width ='100%';
+                    
+                    $rightDiv.style.height = '5.375rem'
+                    $rightDiv.style.borderLeft = `4px solid ${modelSelect.color}`;
+                    $rightDiv.style.width = '60%';
+                    $rightDiv.style.marginLeft='1px';
+                    $rightDiv.style.maxWidth='10rem';
+                    $rightDiv.style.display='flex';
+                    
+                    $pNumbers.style.display='flex'
+
+                    $image.src = './assets/trash.png';
+                    $image.style.width='20px';
+                    $btnDelete.style.backgroundColor='#fff';
+                    $btnDelete.style.border='none';
+
+                    $rightDiv.appendChild($pNumbers);
+                    $btnDelete.appendChild($image)
+                    $sectionElement.appendChild($btnDelete);
+                    $sectionElement.appendChild($rightDiv)
+                    $sectionCart.appendChild($sectionElement);
+
+
+                })
+
+            },
+
+            cartCardStyle:function(){
 
             },
 
@@ -102,7 +146,7 @@
                         })
                         modelSelect = item;
                         lotery.generateTableGame(item);
-                    })
+                    });
                     
                     sectionBtnRules.appendChild($button);
                 });
@@ -124,7 +168,7 @@
                 $gameNumbers.innerHTML=""
                 $ruleText.innerHTML = element.description;
 
-                for(let i=0;i<element.range;i++){
+                for(let i=1;i<=element.range;i++){
                     const $button  = document.createElement('button');
                     $button.setAttribute('selected','false');
                     $button.setAttribute('id',i);
@@ -143,7 +187,7 @@
                             $button.style.backgroundColor =numberBTNCollor;
                         }
                         console.log(selectedNumbers);
-                    })
+                    });
                     $gameNumbers.appendChild($button);
                 }
             },
