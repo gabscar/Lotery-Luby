@@ -115,8 +115,9 @@ main {
 /* Game Panel */
 
 .gameSection{
-    width: 70%;
-    padding-top: 1.5rem;    
+    width: 80%;
+    padding-top: 1.5rem; 
+       
 }
 
 .gameSection .gameTitle{
@@ -144,7 +145,7 @@ main {
 
 .gameSection .rules{
     
-    width: 70%;
+    width: 90%;
     color: var(--ligthgray);
     margin-bottom: 1.688rem;
 }
@@ -178,6 +179,7 @@ main {
     background: var(--red) 0% 0% no-repeat padding-box;
 }
 
+
 /*button actions*/
 
 .gameSection .buttons{
@@ -185,7 +187,15 @@ main {
     justify-content: space-between;
     margin-top: 2.25rem;
 }
+.gameSection .buttons{
+    margin-bottom:0.5rem;
+}
 
+@media (max-width:1723px) {
+    .gameSection .buttons{
+        margin-bottom:2rem;
+    }
+}
 .gameSection .buttons button{
     cursor: pointer;
     background-color: var(--white);
@@ -286,17 +296,18 @@ main .cart .save-btn i{
 /*footer*/
 
 footer {
+    
     position: fixed;
     bottom: 0;
     left: 0;
     text-align: center;
     width: 100%;
     background: var(--white) 0% 0% no-repeat padding-box;
-
     padding: .8rem 0rem;
     border-top: 2px solid var(--cartColor);
     color: var(--gray);
     font-style: normal;
+    
 }
 
 
