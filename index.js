@@ -16,9 +16,7 @@
                 ajax.open('GET','./games.json');
                 ajax.send();
                 ajax.addEventListener('readystatechange',this.getGameRule);
-            },
 
-            getGameRule:function(){                
                 if(this.status ===200 && this.readyState ===4){
                     let data = JSON.parse(this.responseText);
                     lotery.chooseAction(data.types);
@@ -40,7 +38,7 @@
 
             selectModel:function(dataGame,sectionBtnRules){
                 
-                dataGame.map((item,index) => {
+                dataGame.map((item) => {
                     selectedNumbers = [];
                     let $button =  document.createElement('button');
                     $button.setAttribute('class','btn-game-mode');
