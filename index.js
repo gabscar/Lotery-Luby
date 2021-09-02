@@ -35,48 +35,46 @@
                 lotery.selectModel(dataGame,sectionBtnRules);
                 btnClear.addEventListener('click',this.clearBalls);
                 btnRandGame.addEventListener('click',this.randomGame);
-                btnCart.addEventListener('click',()=>{
-                    const totalText =  document.querySelector('[data-js=cart-value-total]');
-
-                    let numbersInDescription = modelSelect.description.match(/\d+/g);
-                    let menor = Math.min(...numbersInDescription);
-
-                    if(selectedNumbers.length < menor ){
-                        window.alert(`selecione de ${menor} até ${modelSelect['max-number']} números para colocar no carrinho`);
-                        return;
-                    }
-                    
-                    
-                    totalPrice+=modelSelect.price;
-                    console.log(totalPrice)
-                    totalText.innerHTML = 'R$' + totalPrice.toFixed(2);
-
-                    const $sectionCart = document.querySelector('[data-js=cart-item]');
-
-                    const $sectionElement = document.createElement('section');
-                    const $rightDiv = document.createElement('section');
-                    const $image = document.createElement('img');
-                    const $btnDelete = document.createElement('button')
-                    const $pNumbers = document.createElement('p');
-                
-                    $pNumbers.innerHTML = selectedNumbers.join(', ');
-                    
-                    
-                    this.cartCardStyle($sectionElement,$rightDiv,$image,$btnDelete);
-                    
-                    $rightDiv.appendChild($pNumbers);
-                    $btnDelete.appendChild($image)
-                    $sectionElement.appendChild($btnDelete);
-                    $sectionElement.appendChild($rightDiv)
-                    $sectionCart.appendChild($sectionElement);
-                    this.clearBalls();
-
-                })
-                
-                
+                btnCart.addEventListener('click',this.setProductsinCart)         
             },
 
-            cartCardStyle:function($sectionElement,$rightDiv,$image,$btnDelete){
+            setProductsinCart: function(){
+                const totalText =  document.querySelector('[data-js=cart-value-total]');
+                const $sectionCart = document.querySelector('[data-js=cart-item]');
+                const $sectionElement = document.createElement('section');
+                const $rightDiv = document.createElement('section');
+                const $image = document.createElement('img');
+                const $btnDelete = document.createElement('button')
+                const $pNumbers = document.createElement('p');
+                const $pNameandValue = document.createElement('p');         
+                const $pNameModeinCard = document.createElement('span');
+
+                let priceModel =modelSelect.price
+                let numbersInDescription = modelSelect.description.match(/\d+/g);
+                let menor = Math.min(...numbersInDescription);
+
+                if(selectedNumbers.length < menor ){
+                    window.alert(`selecione de ${menor} até ${modelSelect['max-number']} números para colocar no carrinho`);
+                    return;
+                }
+                lotery.cartCardStyle($sectionElement,$rightDiv,$image,$btnDelete,$pNumbers,$pNameandValue,$pNameModeinCard); 
+
+                totalPrice+=priceModel;
+                totalText.innerHTML = 'R$' + totalPrice.toFixed(2).replace('.',',');
+                $pNameModeinCard.innerHTML = modelSelect.type;                    
+                $pNumbers.innerHTML = selectedNumbers.join(', ');     
+                $pNameandValue.innerHTML = $pNameModeinCard.outerHTML + " R$ " + String(priceModel).replace('.',',');
+                               
+                $rightDiv.appendChild($pNumbers);
+                $rightDiv.appendChild($pNameandValue);
+                $btnDelete.appendChild($image);
+                $sectionElement.appendChild($btnDelete);
+                $sectionElement.appendChild($rightDiv);
+                $sectionCart.appendChild($sectionElement);
+                lotery.clearBalls();
+            },
+
+            cartCardStyle:function($sectionElement,$rightDiv,$image,$btnDelete,$pNumbers,$pNameandValue,$pNameModeinCard){
                 $sectionElement.style.alignItems='center';
                 $sectionElement.style.justifyContent='space-evenly';
                 $sectionElement.style.flexDirection = 'row';
@@ -85,17 +83,24 @@
                 $sectionElement.style.marginTop = '1rem';
                 $sectionElement.style.marginBottom = '1rem';
                 
-                $rightDiv.style.height = '5.375rem';
+               
                 $rightDiv.style.borderLeft = `4px solid ${modelSelect.color}`;
                 $rightDiv.style.borderRadius = '4px 0px 0px 4px';
                 $rightDiv.style.width = '60%';
                 $rightDiv.style.marginLeft='1px';
                 $rightDiv.style.maxWidth='10rem';
                 $rightDiv.style.display='flex';
-
+                $rightDiv.style.flexDirection='column';
                 
-                
+                $pNumbers.style.marginBottom = '6px';
+                $pNumbers.style.marginLeft = '12px';
 
+                $pNameandValue.style.marginLeft = '12px';
+                $pNameandValue.style.flexDirection = 'row'
+               
+                $pNameModeinCard.style.color = modelSelect.color;
+                $pNameModeinCard.style.fontWeight = '500';
+               
                 $image.src = './assets/trash.png';
                 $image.style.width='20px';
                 $btnDelete.style.backgroundColor='#fff';
