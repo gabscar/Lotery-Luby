@@ -6,6 +6,7 @@
         const ajax = new XMLHttpRequest();
         let modelSelect;
         let selectedNumbers =[];
+        let totalPrice =0;
         return{
             start: function(){
                 this.gameSelect();
@@ -34,13 +35,21 @@
                 lotery.selectModel(dataGame,sectionBtnRules);
                 btnClear.addEventListener('click',this.clearBalls);
                 btnRandGame.addEventListener('click',this.randomGame);
-                btnCart.addEventListener('click',(evt)=>{
-                    let value = modelSelect.description.match(/\d+/g);
-                    let menor = Math.min(...value)
+                btnCart.addEventListener('click',()=>{
+                    const totalText =  document.querySelector('[data-js=cart-value-total]');
+
+                    let numbersInDescription = modelSelect.description.match(/\d+/g);
+                    let menor = Math.min(...numbersInDescription);
+
                     if(selectedNumbers.length < menor ){
                         window.alert(`selecione de ${menor} até ${modelSelect['max-number']} números para colocar no carrinho`);
                         return;
                     }
+                    
+                    
+                    totalPrice+=modelSelect.price;
+                    console.log(totalPrice)
+                    totalText.innerHTML = 'R$' + totalPrice.toFixed(2);
 
                     const $sectionCart = document.querySelector('[data-js=cart-item]');
 
