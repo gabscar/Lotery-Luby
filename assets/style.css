@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,300;1,400;1,600&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;1,400;1,500;1,600&display=swap');
+
+
 
 :root{
     --white: #f7f7f7;
@@ -17,7 +20,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Open+Sans', sans-serif;
+    font-family: 'Arimo', sans-serif;
     
     color: var(--gray);
 }
@@ -25,6 +28,8 @@
 html, body {
     width: 100%;
     
+    min-height:100%;
+    position:relative;
     background:var(--white) 0% 0% no-repeat padding-box;
     opacity: 1;
     font-style: italic;
@@ -32,6 +37,7 @@ html, body {
 
 .container {
     width: 100%;
+    height: 100%;
 }
 /* HEADER CSS */
 header{
@@ -81,22 +87,7 @@ header .rightTop p:last-child i{
     font-size: 1.303rem;
 }
 
-@media (max-width:720px) {
-    header .leftTop p{
-      display: none;
-        
-    }
-    header .rightTop{
-        display: none;
-    }
-
-}
-
-
-
-
 /* main  */
-
 
 main {
     margin: 0 auto;
@@ -104,13 +95,6 @@ main {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-}
-@media (max-width:1000px){
-    main{
-        flex-direction: column;
-        align-items: center;
-        height: 100%;
-    }
 }
 
 /* Game Panel */
@@ -125,6 +109,9 @@ main {
     display: flex;
     align-items: center;
     margin-bottom: 2.063rem;
+}
+.gameSection .gameTitle h2{
+    font-weight: bold;
 }
 
 .gameSection .gameTitle p{
@@ -187,16 +174,10 @@ main {
     display: flex;
     justify-content: space-between;
     margin-top: 2.25rem;
-}
-.gameSection .buttons{
     margin-bottom:0.5rem;
 }
 
-@media (max-width:1723px) {
-    .gameSection .buttons{
-        margin-bottom:2rem;
-    }
-}
+
 .gameSection .buttons button{
     cursor: pointer;
     background-color: var(--white);
@@ -240,6 +221,7 @@ main .cart{
     border: 1px solid var(--cartColor);
     width: 25%;
     position: relative;
+   
 }
 
 main .cart h2{
@@ -294,14 +276,14 @@ main .cart .total-section p{
     margin-top: 2rem;
 }
 main .cart .save-btn{
-    width: 100%;
-    border: 1px solid var(--cartColor); 
     display: flex;
     align-items: center;
-    justify-content: center;    
+    justify-content: center;   
     position: absolute;
+    width: 100%;
+    border: 1px solid var(--cartColor); 
     height: 6rem;
-    cursor: pointer;
+    cursor: wait;
     bottom: 0rem;       
     font-size: 2.188rem;
     color: var(--green);    
@@ -312,21 +294,63 @@ main .cart .save-btn i{
 }
 
 
-
 /*footer*/
 
 footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+  
+    position:absolute;
+    bottom:0;
+    width:100%;
     text-align: center;
     width: 100%;
     background: var(--white) 0% 0% no-repeat padding-box;
-    padding: .8rem 0rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0rem;
     border-top: 2px solid var(--cartColor);
     color: var(--gray);
     font-style: normal;
     
 }
+@media(min-width:1064px){
+    html,body{
+        height: 1050px;
+    }
+}
+@media (max-width:1723px) {
+    .gameSection .buttons{
+        margin-bottom:2rem;
+    }
+}
+@media (max-width:1000px){
+    main{
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+    }
+}
+@media (max-width:720px) {
+    header .leftTop p{
+      display: none;
+        
+    }
+    header .rightTop{
+        display: none;
+    }
 
-
+}
+@media (max-width:1000px){
+    main .cart{
+        height: 29rem;
+        background-color: var(--whiteTrue);
+        border-radius: 0.625rem;
+        border: 1px solid var(--cartColor);
+        width: 70%;
+        align-self: center;
+        justify-self: center;
+        margin-bottom: 8rem;
+    }
+    .gameSection .buttons .buttons-left button:first-child{
+        margin-bottom: 1.2rem;
+    }
+    
+}

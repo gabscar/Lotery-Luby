@@ -15,12 +15,12 @@
             gameSelect: function(){
                 ajax.open('GET','./games.json');
                 ajax.send();
-                ajax.addEventListener('readystatechange',this.getGameRule)
+                ajax.addEventListener('readystatechange',this.getGameRule);
             },
 
             getGameRule:function(){                
                 if(this.status ===200 && this.readyState ===4){
-                    let data = JSON.parse(this.responseText)
+                    let data = JSON.parse(this.responseText);
                     lotery.chooseAction(data.types);
                 }
             },
@@ -37,7 +37,7 @@
                 btnRandGame.addEventListener('click',this.randomGame);
                 btnCart.addEventListener('click',this.setProductsinCart)         
             },
-            
+
             selectModel:function(dataGame,sectionBtnRules){
                 
                 dataGame.map((item,index) => {
@@ -66,7 +66,6 @@
                         this.setDescriptionMode();
                         lotery.generateTableGame(item);
                     });
-                    
                     sectionBtnRules.appendChild($button);
                 });
                 
@@ -79,6 +78,7 @@
                 button.padding = "0.3rem 1.5rem";
                 button.borderRadius = '6rem';
                 button.marginLeft = '1.5rem';
+                button.cursor = 'pointer';
             },
 
             setDescriptionMode: function(){
@@ -133,7 +133,7 @@
                   
                     let limit = Number(modelSelect['max-number']) - selectedNumbers.length
                     if(limit===0){
-                        this.clearBalls();
+                        lotery.clearBalls();
                         limit = Number(modelSelect['max-number']);
                     }
                        
@@ -175,18 +175,35 @@
                 lotery.cartCardStyle($sectionElement,$rightDiv,$image,$btnDelete,$pNumbers,$pNameandValue,$pNameModeinCard); 
 
                 totalPrice+=priceModel;
-                totalText.innerHTML = 'R$' + totalPrice.toFixed(2).replace('.',',');
-                $pNameModeinCard.innerHTML = modelSelect.type;                    
+                totalText.innerHTML = 'Total R$' + totalPrice.toFixed(2).replace('.',',');
+                $pNameModeinCard.innerHTML = modelSelect.type;             
+                
+                
                 $pNumbers.innerHTML = selectedNumbers.join(', ');     
-                $pNameandValue.innerHTML = $pNameModeinCard.outerHTML + " R$ " + String(priceModel).replace('.',',');
+                $pNameandValue.innerHTML = $pNameModeinCard.outerHTML + " R$ " + String(priceModel.toFixed(2)).replace('.',',');
                                
                 $rightDiv.appendChild($pNumbers);
                 $rightDiv.appendChild($pNameandValue);
                 $btnDelete.appendChild($image);
+
+                $sectionElement.setAttribute('priceInSection',`${modelSelect.price}`);
                 $sectionElement.appendChild($btnDelete);
                 $sectionElement.appendChild($rightDiv);
                 $sectionCart.appendChild($sectionElement);
+
+                $btnDelete.addEventListener('click',(evt)=>lotery.deleteProductsInCart(evt));
                 lotery.clearBalls();
+            },
+
+            deleteProductsInCart:function(evt){
+                const totalText =  document.querySelector('[data-js=cart-value-total]');
+                const element = evt.target;
+                const btn = element.parentNode
+                const section = btn.parentNode;
+                let valor  = section.getAttribute('priceInSection');
+                totalPrice -= valor;
+                section.remove();
+                totalText.innerHTML = 'Total R$' + totalPrice.toFixed(2).replace('.',',');
             },
 
             cartCardStyle:function($sectionElement,$rightDiv,$image,$btnDelete,$pNumbers,$pNameandValue,$pNameModeinCard){
@@ -214,7 +231,8 @@
                 $pNameandValue.style.flexDirection = 'row'
                
                 $pNameModeinCard.style.color = modelSelect.color;
-                $pNameModeinCard.style.fontWeight = '500';
+                $pNameModeinCard.style.fontWeight = 'bold';
+                $pNameModeinCard.style.fontSize = '1rem'
                
                 $image.src = './assets/trash.png';
                 $image.style.width='20px';
@@ -222,9 +240,7 @@
                 $btnDelete.style.border='none';
             },
 
-        }
-
-        
+        }       
     })();
     lotery.start();
 })(window,document);
