@@ -37,7 +37,122 @@
                 btnRandGame.addEventListener('click',this.randomGame);
                 btnCart.addEventListener('click',this.setProductsinCart)         
             },
+            
+            selectModel:function(dataGame,sectionBtnRules){
+                
+                dataGame.map((item,index) => {
+                    selectedNumbers = [];
+                    let $button =  document.createElement('button');
+                    $button.setAttribute('class','btn-game-mode');
+                    $button.setAttribute('selected', 'false');
+                    lotery.buttonGameModeStyle($button.style,item.color);      
+                    $button.innerHTML = item.type;
+                    $button.addEventListener('click',(evt)=>{
+                        evt.preventDefault();            
+                        selectedNumbers = [];            
+                        $button.style.backgroundColor = item.color;
+                        $button.style.color = '#fff';
+                        $button.setAttribute('selected','true');
+                        let listBtn = document.querySelectorAll('.btn-game-mode');
+                        listBtn.forEach((item)=>{
+                            if(item !== evt.target && item.getAttribute('selected') ==='true' ){
+                                let background = item.style.color;
+                                item.style.color = item.style.backgroundColor;
+                                item.style.backgroundColor = background;
+                                item.setAttribute('selected','false');                         
+                            }
+                        })
+                        modelSelect = item;
+                        this.setDescriptionMode();
+                        lotery.generateTableGame(item);
+                    });
+                    
+                    sectionBtnRules.appendChild($button);
+                });
+                
+            },
+            
+            buttonGameModeStyle:function(button,color){
+                button.color = color;
+                button.backgroundColor='#FFFFFF';
+                button.border =`2px solid ${color}`;
+                button.padding = "0.3rem 1.5rem";
+                button.borderRadius = '6rem';
+                button.marginLeft = '1.5rem';
+            },
 
+            setDescriptionMode: function(){
+                const $ruleText = document.querySelector("[data-js = textRule]"); 
+                $ruleText.innerHTML = modelSelect.description;
+            },
+
+            generateTableGame: function(element){                
+                const $gameNumbers = document.querySelector("[data-js = gameNumbers]"); 
+               
+                $gameNumbers.innerHTML=""
+
+                for(let i=1;i<=element.range;i++){
+                    const $button  = document.createElement('button');
+                    $button.setAttribute('selected','false');
+                    $button.setAttribute('id',i);
+                    $button.setAttribute('data-js','numbersBtn');
+                    $button.innerHTML = i>10? i:"0"+i;
+                    $button.addEventListener('click',()=>{
+                        let limit = element['max-number'] - selectedNumbers.length;
+                        if($button.getAttribute('selected') === 'false' && limit!==0){                           
+                            selectedNumbers.push(Number($button.getAttribute('id')));
+                            $button.setAttribute('selected','true');
+                            $button.style.backgroundColor = element.color;            
+                        }else if($button.getAttribute('selected') === 'true'){
+                            let removedIndex = selectedNumbers.indexOf(Number($button.getAttribute('id')));
+                            selectedNumbers.splice(removedIndex,1);
+                            $button.setAttribute('selected',false);
+                            $button.style.backgroundColor =numberBTNCollor;
+                        }
+                        console.log(selectedNumbers);
+                    });
+                    $gameNumbers.appendChild($button);
+                }
+            },
+
+            clearBalls:function(){
+                let buttons = document.querySelectorAll("[data-js = numbersBtn]");                    
+                buttons.forEach((item)=>{
+                    item.style.backgroundColor = numberBTNCollor;
+                    item.setAttribute('selected','false');
+                    selectedNumbers = [];
+                });
+            },
+
+            randomGame:function(){
+                let buttons = document.querySelectorAll("[data-js = numbersBtn]");    
+                    if(modelSelect==undefined){
+                        window.alert("Selecione um modo de jogo");
+                        return;
+                    }
+                  
+                    let limit = Number(modelSelect['max-number']) - selectedNumbers.length
+                    if(limit===0){
+                        this.clearBalls();
+                        limit = Number(modelSelect['max-number']);
+                    }
+                       
+                    let counter=0;
+                    while(counter<limit){
+                        let sort = Math.floor(Math.random() * (modelSelect.range));
+                        if(selectedNumbers.indexOf(sort) == -1){
+                            selectedNumbers.push(sort);
+                            counter++;
+                        }
+                    }
+                    
+                    buttons.forEach((item)=>{
+                        if(selectedNumbers.indexOf(Number(item.id)) !=-1){
+                            item.style.backgroundColor = modelSelect.color;
+                            item.setAttribute('selected','true');
+                        }                        
+                    });
+            },
             setProductsinCart: function(){
                 const totalText =  document.querySelector('[data-js=cart-value-total]');
                 const $sectionCart = document.querySelector('[data-js=cart-item]');
@@ -107,123 +222,9 @@
                 $btnDelete.style.border='none';
             },
 
-            randomGame:function(){
-                let buttons = document.querySelectorAll("[data-js = numbersBtn]");    
-                    if(modelSelect==undefined){
-                        window.alert("Selecione um modo de jogo");
-                        return;
-                    }
-                  
-                    let limit = Number(modelSelect['max-number']) - selectedNumbers.length
-                    if(limit===0){
-                        this.clearBalls();
-                        limit = Number(modelSelect['max-number']);
-                    }
-                       
-                    let counter=0;
-                    while(counter<limit){
-                        let sort = Math.floor(Math.random() * (modelSelect.range));
-                        if(selectedNumbers.indexOf(sort) == -1){
-                            selectedNumbers.push(sort);
-                            counter++;
-                        }
-                    }
-                    
-                    buttons.forEach((item)=>{
-                        if(selectedNumbers.indexOf(Number(item.id)) !=-1){
-                            item.style.backgroundColor = modelSelect.color;
-                            item.setAttribute('selected','true');
-                        }                        
-                    });
-            },
-
-            clearBalls:function(){
-                let buttons = document.querySelectorAll("[data-js = numbersBtn]");                    
-                buttons.forEach((item)=>{
-                    item.style.backgroundColor = numberBTNCollor;
-                    item.setAttribute('selected','false');
-                    selectedNumbers = [];
-                });
-            },
-
-            selectModel:function(dataGame,sectionBtnRules){
-                
-                dataGame.map((item,index) => {
-                    selectedNumbers = [];
-                    let $button =  document.createElement('button');
-                    $button.setAttribute('class','btn-game-mode');
-                    $button.setAttribute('selected', 'false');
-                    lotery.buttonGameModeStyle($button.style,item.color);      
-                    $button.innerHTML = item.type;
-                    $button.addEventListener('click',(evt)=>{
-                        evt.preventDefault();            
-                        selectedNumbers = [];            
-                        $button.style.backgroundColor = item.color;
-                        $button.style.color = '#fff';
-                        $button.setAttribute('selected','true');
-                        let listBtn = document.querySelectorAll('.btn-game-mode');
-                        listBtn.forEach((item)=>{
-                            if(item !== evt.target && item.getAttribute('selected') ==='true' ){
-                                let background = item.style.color;
-                                item.style.color = item.style.backgroundColor;
-                                item.style.backgroundColor = background;
-                                item.setAttribute('selected','false');                         
-                            }
-                        })
-                        modelSelect = item;
-                        this.setDescriptionMode();
-                        lotery.generateTableGame(item);
-                    });
-                    
-                    sectionBtnRules.appendChild($button);
-                });
-                
-            },
-            
-
-            buttonGameModeStyle:function(button,color){
-                button.color = color;
-                button.backgroundColor='#FFFFFF';
-                button.border =`2px solid ${color}`;
-                button.padding = "0.3rem 1.5rem";
-                button.borderRadius = '6rem';
-                button.marginLeft = '1.5rem';
-            },
-
-            setDescriptionMode: function(){
-                const $ruleText = document.querySelector("[data-js = textRule]"); 
-                $ruleText.innerHTML = modelSelect.description;
-            },
-
-            generateTableGame: function(element){                
-                const $gameNumbers = document.querySelector("[data-js = gameNumbers]"); 
-               
-                $gameNumbers.innerHTML=""
-
-                for(let i=1;i<=element.range;i++){
-                    const $button  = document.createElement('button');
-                    $button.setAttribute('selected','false');
-                    $button.setAttribute('id',i);
-                    $button.setAttribute('data-js','numbersBtn');
-                    $button.innerHTML = i>10? i:"0"+i;
-                    $button.addEventListener('click',()=>{
-                        let limit = element['max-number'] - selectedNumbers.length;
-                        if($button.getAttribute('selected') === 'false' && limit!==0){                           
-                            selectedNumbers.push(Number($button.getAttribute('id')));
-                            $button.setAttribute('selected','true');
-                            $button.style.backgroundColor = element.color;            
-                        }else if($button.getAttribute('selected') === 'true'){
-                            let removedIndex = selectedNumbers.indexOf(Number($button.getAttribute('id')));
-                            selectedNumbers.splice(removedIndex,1);
-                            $button.setAttribute('selected',false);
-                            $button.style.backgroundColor =numberBTNCollor;
-                        }
-                        console.log(selectedNumbers);
-                    });
-                    $gameNumbers.appendChild($button);
-                }
-            },
         }
+
+        
     })();
     lotery.start();
 })(window,document);

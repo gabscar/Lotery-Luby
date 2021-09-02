@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,300;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,300;1,400;1,600&display=swap');
 
 :root{
     --white: #f7f7f7;
@@ -17,8 +17,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-    font-style: italic;
+    font-family: 'Open+Sans', sans-serif;
+    
     color: var(--gray);
 }
 
@@ -262,6 +262,17 @@ main .cart .cart-element .cart-item{
     align-items: center;  
     overflow-y: scroll;
     overflow-x: hidden; 
+}
+main .cart .cart-element .cart-item::-webkit-scrollbar{
+    width: 0.4rem;
+}
+main .cart .cart-element .cart-item::-webkit-scrollbar-track{
+    background: var(--white);
+}
+main .cart .cart-element .cart-item::-webkit-scrollbar-thumb{
+    background-color: var(--white);   
+    border-radius: 20px;       
+    border: 0.1px solid var(--ligthgray);  
 }
 
 main .cart .total-section{
