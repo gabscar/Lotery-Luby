@@ -96,7 +96,7 @@
                     $button.setAttribute('selected','false');
                     $button.setAttribute('id',i);
                     $button.setAttribute('data-js','numbersBtn');
-                    $button.innerHTML = i>10? i:"0"+i;
+                    $button.innerHTML = i>9? i:"0"+i;
                     $button.addEventListener('click',()=>{
                         let limit = element['max-number'] - selectedNumbers.length;
                         if($button.getAttribute('selected') === 'false' && limit!==0){                           
@@ -116,6 +116,10 @@
             },
 
             clearBalls:function(){
+                if(!modelSelect){
+                    window.alert("Selecione um modo de jogo");
+                    return;
+                }
                 let buttons = document.querySelectorAll("[data-js = numbersBtn]");                    
                 buttons.forEach((item)=>{
                     item.style.backgroundColor = numberBTNCollor;
