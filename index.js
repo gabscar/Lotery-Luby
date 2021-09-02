@@ -7,6 +7,7 @@
         let modelSelect;
         let selectedNumbers =[];
         let totalPrice =0;
+        
         return{
             start: function(){
                 this.gameSelect();
@@ -16,13 +17,14 @@
                 ajax.open('GET','./games.json');
                 ajax.send();
                 ajax.addEventListener('readystatechange',this.getGameRule);
-
+                
+            },
+            getGameRule:function(){
                 if(this.status ===200 && this.readyState ===4){
                     let data = JSON.parse(this.responseText);
                     lotery.chooseAction(data.types);
                 }
             },
-
             chooseAction: function(dataGame){
 
                 const sectionBtnRules = document.querySelector(".gameMode");
@@ -45,40 +47,31 @@
                     $button.setAttribute('selected', 'false');
                     lotery.buttonGameModeStyle($button.style,item.color);      
                     $button.innerHTML = item.type;
-                    $button.addEventListener('click',(evt)=>{
-                        evt.preventDefault();            
-                        selectedNumbers = [];            
-                        $button.style.backgroundColor = item.color;
-                        $button.style.color = '#fff';
-                        $button.setAttribute('selected','true');
-                        let listBtn = document.querySelectorAll('.btn-game-mode');
-                        listBtn.forEach((item)=>{
-                            if(item !== evt.target && item.getAttribute('selected') ==='true' ){
-                                let background = item.style.color;
-                                item.style.color = item.style.backgroundColor;
-                                item.style.backgroundColor = background;
-                                item.setAttribute('selected','false');                         
-                            }
-                        })
-                        modelSelect = item;
-                        this.setDescriptionMode();
-                        lotery.generateTableGame(item);
-                    });
+                    $button.addEventListener('click',(evt)=>{lotery.buttonActionSelectMode(evt,$button,item)});
                     sectionBtnRules.appendChild($button);
                 });
                 
             },
-            
-            buttonGameModeStyle:function(button,color){
-                button.color = color;
-                button.backgroundColor='#FFFFFF';
-                button.border =`2px solid ${color}`;
-                button.padding = "0.3rem 1.5rem";
-                button.borderRadius = '6rem';
-                button.marginLeft = '1.5rem';
-                button.cursor = 'pointer';
+            buttonActionSelectMode:function(evt,$button,item){
+                evt.preventDefault();            
+                selectedNumbers = [];            
+                $button.style.backgroundColor = item.color;
+                $button.style.color = '#fff';
+                $button.setAttribute('selected','true');
+                let listBtn = document.querySelectorAll('.btn-game-mode');
+                listBtn.forEach((item)=>{
+                    if(item !== evt.target && item.getAttribute('selected') ==='true' ){
+                        let background = item.style.color;
+                        item.style.color = item.style.backgroundColor;
+                        item.style.backgroundColor = background;
+                        item.setAttribute('selected','false');                         
+                    }
+                })
+                modelSelect = item;
+                this.setDescriptionMode();
+                lotery.generateTableGame(item);
             },
-
+            
             setDescriptionMode: function(){
                 const $ruleText = document.querySelector("[data-js = textRule]"); 
                 $ruleText.innerHTML = modelSelect.description;
@@ -198,6 +191,7 @@
             },
 
             deleteProductsInCart:function(evt){
+                evt.preventDefault();
                 const totalText =  document.querySelector('[data-js=cart-value-total]');
                 const element = evt.target;
                 const btn = element.parentNode
@@ -240,6 +234,15 @@
                 $image.style.width='20px';
                 $btnDelete.style.backgroundColor='#fff';
                 $btnDelete.style.border='none';
+            },
+            buttonGameModeStyle:function(button,color){
+                button.color = color;
+                button.backgroundColor='#FFFFFF';
+                button.border =`2px solid ${color}`;
+                button.padding = "0.3rem 1.5rem";
+                button.borderRadius = '6rem';
+                button.marginLeft = '1.5rem';
+                button.cursor = 'pointer';
             },
 
         }       
