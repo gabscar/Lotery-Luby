@@ -9,7 +9,7 @@
     --header: #b5c401;
     --ligthgray: #868686;
     --iceGray: #ADC0C4;
-    --red: rgb(250, 0, 0);
+    --hoverColor: rgb(134, 134, 134);
     --cartColor :#E2E2E2;
 }
 
@@ -42,6 +42,7 @@ header{
     font-weight: 500;
     margin-bottom: 2rem;
     margin-top: 0.938rem;
+    border-bottom: 0.1rem solid var(--cartColor);
 }
 header .title{
     display: flex;
@@ -176,7 +177,7 @@ main {
 }
 
 .gameSection .gameNumbers button:hover{
-    background: var(--red) 0% 0% no-repeat padding-box;
+    background: var(--hoverColor) 0% 0% no-repeat padding-box;
 }
 
 
@@ -258,7 +259,9 @@ main .cart .cart-element .cart-item{
     height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;   
+    align-items: center;  
+    overflow-y: scroll;
+    overflow-x: hidden; 
 }
 
 main .cart .total-section{
@@ -302,7 +305,6 @@ main .cart .save-btn i{
 /*footer*/
 
 footer {
-    
     position: fixed;
     bottom: 0;
     left: 0;

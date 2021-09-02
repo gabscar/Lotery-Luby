@@ -36,49 +36,58 @@
                 btnRandGame.addEventListener('click',this.randomGame);
                 btnCart.addEventListener('click',(evt)=>{
                    
+                    if(selectedNumbers.length !== modelSelect['max-number']){
+                        window.alert(`selecione ${modelSelect['max-number']} números para colocar no carrinho`)
+                        return;
+                    }
+                    
                     const $sectionCart = document.querySelector('[data-js=cart-item]');
 
-                    const $sectionElement = document.createElement('div');
-                    const $rightDiv = document.createElement('div');
+                    const $sectionElement = document.createElement('section');
+                    const $rightDiv = document.createElement('section');
                     const $image = document.createElement('img');
                     const $btnDelete = document.createElement('button')
                     const $pNumbers = document.createElement('p');
-                   
+                
                     $pNumbers.innerHTML = selectedNumbers.join(', ');
                     
-                    $sectionElement.style.alignItems='center';
-                    $sectionElement.style.justifyContent='space-evenly';
-                    $sectionElement.style.flexDirection = 'row';
-                    $sectionElement.style.display='flex';                  
-                    $sectionElement.style.width ='100%';
+                    this.cartCardStyle($sectionElement,$rightDiv,$image,$btnDelete);
                     
-                    $rightDiv.style.height = '5.375rem'
-                    $rightDiv.style.borderLeft = `4px solid ${modelSelect.color}`;
-                    $rightDiv.style.width = '60%';
-                    $rightDiv.style.marginLeft='1px';
-                    $rightDiv.style.maxWidth='10rem';
-                    $rightDiv.style.display='flex';
-                    
-                    $pNumbers.style.display='flex'
-
-                    $image.src = './assets/trash.png';
-                    $image.style.width='20px';
-                    $btnDelete.style.backgroundColor='#fff';
-                    $btnDelete.style.border='none';
-
                     $rightDiv.appendChild($pNumbers);
                     $btnDelete.appendChild($image)
                     $sectionElement.appendChild($btnDelete);
                     $sectionElement.appendChild($rightDiv)
                     $sectionCart.appendChild($sectionElement);
-
+                    this.clearBalls();
 
                 })
-
+            
             },
 
-            cartCardStyle:function(){
+            cartCardStyle:function($sectionElement,$rightDiv,$image,$btnDelete){
+                $sectionElement.style.alignItems='center';
+                $sectionElement.style.justifyContent='space-evenly';
+                $sectionElement.style.flexDirection = 'row';
+                $sectionElement.style.display='flex';                  
+                $sectionElement.style.width ='100%';
+                $sectionElement.style.marginTop = '1rem';
+                $sectionElement.style.marginBottom = '1rem';
+                
+                $rightDiv.style.height = '5.375rem';
+                $rightDiv.style.borderLeft = `4px solid ${modelSelect.color}`;
+                $rightDiv.style.borderRadius = '4px 0px 0px 4px';
+                $rightDiv.style.width = '60%';
+                $rightDiv.style.marginLeft='1px';
+                $rightDiv.style.maxWidth='10rem';
+                $rightDiv.style.display='flex';
 
+                
+                
+
+                $image.src = './assets/trash.png';
+                $image.style.width='20px';
+                $btnDelete.style.backgroundColor='#fff';
+                $btnDelete.style.border='none';
             },
 
             randomGame:function(){
@@ -145,6 +154,7 @@
                             }
                         })
                         modelSelect = item;
+                        this.setDescriptionMode();
                         lotery.generateTableGame(item);
                     });
                     
@@ -161,12 +171,15 @@
                 button.marginLeft = '1.5rem';
             },
 
-            generateTableGame: function(element){
+            setDescriptionMode: function(){
                 const $ruleText = document.querySelector("[data-js = textRule]"); 
+                $ruleText.innerHTML = modelSelect.description;
+            },
+
+            generateTableGame: function(element){                
                 const $gameNumbers = document.querySelector("[data-js = gameNumbers]"); 
                
                 $gameNumbers.innerHTML=""
-                $ruleText.innerHTML = element.description;
 
                 for(let i=1;i<=element.range;i++){
                     const $button  = document.createElement('button');
