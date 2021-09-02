@@ -35,12 +35,13 @@
                 btnClear.addEventListener('click',this.clearBalls);
                 btnRandGame.addEventListener('click',this.randomGame);
                 btnCart.addEventListener('click',(evt)=>{
-                   
-                    if(selectedNumbers.length !== modelSelect['max-number']){
-                        window.alert(`selecione ${modelSelect['max-number']} números para colocar no carrinho`)
+                    let value = modelSelect.description.match(/\d+/g);
+                    let menor = Math.min(...value)
+                    if(selectedNumbers.length < menor ){
+                        window.alert(`selecione de ${menor} até ${modelSelect['max-number']} números para colocar no carrinho`);
                         return;
                     }
-                    
+
                     const $sectionCart = document.querySelector('[data-js=cart-item]');
 
                     const $sectionElement = document.createElement('section');
@@ -50,6 +51,7 @@
                     const $pNumbers = document.createElement('p');
                 
                     $pNumbers.innerHTML = selectedNumbers.join(', ');
+                    
                     
                     this.cartCardStyle($sectionElement,$rightDiv,$image,$btnDelete);
                     
@@ -61,7 +63,8 @@
                     this.clearBalls();
 
                 })
-            
+                
+                
             },
 
             cartCardStyle:function($sectionElement,$rightDiv,$image,$btnDelete){
@@ -160,7 +163,9 @@
                     
                     sectionBtnRules.appendChild($button);
                 });
+                
             },
+            
 
             buttonGameModeStyle:function(button,color){
                 button.color = color;
