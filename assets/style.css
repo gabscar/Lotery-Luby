@@ -175,7 +175,7 @@ main {
 .gameSection .buttons{
     display: flex;
     justify-content: space-between;
-    margin-top: 2.25rem;
+    margin-top: 2rem;
     margin-bottom:0.5rem;
 }
 

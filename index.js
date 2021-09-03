@@ -155,7 +155,7 @@
                        
                     let counter=0;
                     while(counter<limit){
-                        let sort = Math.floor(Math.random() * (modelSelect.range));
+                        let sort = Math.floor(Math.random() * (modelSelect.range - 1)+1);
                         if(selectedNumbers.indexOf(sort) == -1){
                             selectedNumbers.push(sort);
                             counter++;
