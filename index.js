@@ -6,7 +6,7 @@
         const ajax = new XMLHttpRequest();
         let modelSelect;
         let selectedNumbers =[];
-        let totalPrice =0;
+        let $totalPrice =0;
         
         return{
             start: function(){
@@ -22,30 +22,46 @@
             getGameRule:function(){
                 if(this.status ===200 && this.readyState ===4){
                     let data = JSON.parse(this.responseText);
-                    lotery.chooseAction(data.types);
+                    lotery.setInicialActionsState(data.types);
                 }
             },
-            chooseAction: function(dataGame){
-
+            setInicialActionsState: function(dataGame){
+                
                 const sectionBtnRules = document.querySelector(".gameMode");
                 const btnClear = document.querySelector("[data-js = btn-clear-game]");
                 const btnRandGame = document.querySelector("[data-js = btn-random-game]");
                 const btnCart = document.querySelector("[data-js=btn-add-cart]");
-                
+                this.generateInitialTextCart();
                 lotery.selectModel(dataGame,sectionBtnRules);
                 btnClear.addEventListener('click',this.clearBalls);
                 btnRandGame.addEventListener('click',this.randomGame);
-                btnCart.addEventListener('click',this.setProductsinCart)         
+                btnCart.addEventListener('click',this.setProductsinCart);         
             },
 
+            generateInitialTextCart: function(){
+                const $sectionCart = document.querySelector('[data-js=cart-item]');
+                const pToCartMessage = document.createElement('section');
+                pToCartMessage.setAttribute('class','initialTextCard');
+                pToCartMessage.innerHTML='Carrinho Vazio'
+                $sectionCart.appendChild(pToCartMessage);
+            },
             selectModel:function(dataGame,sectionBtnRules){
                 
-                dataGame.map((item) => {
+                dataGame.map((item,index) => {
                     selectedNumbers = [];
                     let $button =  document.createElement('button');
                     $button.setAttribute('class','btn-game-mode');
                     $button.setAttribute('selected', 'false');
-                    lotery.buttonGameModeStyle($button.style,item.color);      
+                    lotery.buttonGameModeStyle($button.style,item.color);
+                    if(index ==0){
+                        $button.setAttribute('selected', 'true');
+                        $button.setAttribute('selected', 'true')
+                        $button.style.color = '#fff';
+                        $button.style.backgroundColor = item.color;
+                        modelSelect = item;
+                        lotery.setDescriptionMode();
+                        lotery.generateTableGame(item);
+                    }
                     $button.innerHTML = item.type;
                     $button.addEventListener('click',(evt)=>{lotery.buttonActionSelectMode(evt,$button,item)});
                     sectionBtnRules.appendChild($button);
@@ -90,6 +106,7 @@
                     $button.innerHTML = i>9? i:"0"+i;
                     $button.addEventListener('click',()=>{
                         let limit = element['max-number'] - selectedNumbers.length;
+                        
                         if($button.getAttribute('selected') === 'false' && limit!==0){                           
                             selectedNumbers.push(Number($button.getAttribute('id')));
                             $button.setAttribute('selected','true');
@@ -99,6 +116,10 @@
                             selectedNumbers.splice(removedIndex,1);
                             $button.setAttribute('selected',false);
                             $button.style.backgroundColor =numberBTNCollor;
+                            limit = element['max-number'] - selectedNumbers.length;
+                        }
+                        if(limit == 0 ){
+                            window.alert(`número máximo de números (${element['max-number']}) selecionado`);
                         }
                         console.log(selectedNumbers);
                     });
@@ -107,8 +128,8 @@
             },
 
             clearBalls:function(){
-                if(!modelSelect){
-                    window.alert("Selecione um modo de jogo");
+                if(selectedNumbers.length == 0){
+                    window.alert("Selecione algum número para limpar");
                     return;
                 }
                 let buttons = document.querySelectorAll("[data-js = numbersBtn]");                    
@@ -148,8 +169,9 @@
                         }                        
                     });
             },
+
             setProductsinCart: function(){
-                const totalText =  document.querySelector('[data-js=cart-value-total]');
+                const $totalText =  document.querySelector('[data-js=cart-value-total]');
                 const $sectionCart = document.querySelector('[data-js=cart-item]');
                 const $sectionElement = document.createElement('section');
                 const $rightDiv = document.createElement('section');
@@ -158,21 +180,33 @@
                 const $pNumbers = document.createElement('p');
                 const $pNameandValue = document.createElement('p');         
                 const $pNameModeinCard = document.createElement('span');
+                const $getNumbersectionElements = document.querySelectorAll('[data-js = section-card-in-cart]');
 
-                let priceModel =modelSelect.price
+                if($getNumbersectionElements.length ==0){
+                    let $textCart = document.querySelector('.initialTextCard');
+                    $textCart.remove();
+                }
+               
+                if(!modelSelect){
+                    window.alert("Selecione um modo de jogo");
+                    return;
+                }
+               
                 let numbersInDescription = modelSelect.description.match(/\d+/g);
                 let menor = Math.min(...numbersInDescription);
-
+                let priceModel =modelSelect.price;
                 if(selectedNumbers.length < menor ){
                     window.alert(`selecione de ${menor} até ${modelSelect['max-number']} números para colocar no carrinho`);
                     return;
                 }
-                lotery.cartCardStyle($sectionElement,$rightDiv,$image,$btnDelete,$pNumbers,$pNameandValue,$pNameModeinCard); 
-
-                totalPrice+=priceModel;
-                totalText.innerHTML = 'Total R$' + totalPrice.toFixed(2).replace('.',',');
-                $pNameModeinCard.innerHTML = modelSelect.type;             
                 
+               
+                lotery.cartCardStyle($sectionElement,$rightDiv,$image,$btnDelete,$pNumbers,$pNameandValue,$pNameModeinCard); 
+                
+                $totalPrice+=priceModel;
+                $totalText.innerHTML = 'Total R$' + $totalPrice.toFixed(2).replace('.',',');
+                $pNameModeinCard.innerHTML = modelSelect.type;             
+                $sectionElement.setAttribute('data-js','section-card-in-cart');
                 
                 $pNumbers.innerHTML = selectedNumbers.join(', ');     
                 $pNameandValue.innerHTML = $pNameModeinCard.outerHTML + " R$ " + String(priceModel.toFixed(2)).replace('.',',');
@@ -184,6 +218,7 @@
                 $sectionElement.setAttribute('priceInSection',`${modelSelect.price}`);
                 $sectionElement.appendChild($btnDelete);
                 $sectionElement.appendChild($rightDiv);
+                
                 $sectionCart.appendChild($sectionElement);
 
                 $btnDelete.addEventListener('click',(evt)=>lotery.deleteProductsInCart(evt));
@@ -192,19 +227,24 @@
 
             deleteProductsInCart:function(evt){
                 evt.preventDefault();
-                const totalText =  document.querySelector('[data-js=cart-value-total]');
-                const element = evt.target;
-                const btn = element.parentNode
-                const section = btn.parentNode;
-                let valor  = section.getAttribute('priceInSection');
-                totalPrice -= valor;
-                section.remove();
-                totalText.innerHTML = 'Total R$' + totalPrice.toFixed(2).replace('.',',');
+                const $totalText =  document.querySelector('[data-js=cart-value-total]');
+                const $element = evt.target;
+                const btn = $element.parentNode
+                const $section = btn.parentNode;
+                let $valor  = $section.getAttribute('priceInSection');
+                $totalPrice -= $valor;
+                $section.remove();
+                const $getNumbersectionElements = document.querySelectorAll('[data-js = section-card-in-cart]');
+
+                if($getNumbersectionElements.length ==0){
+                   this.generateInitialTextCart();
+                }
+                $totalText.innerHTML = 'Total R$' + $totalPrice.toFixed(2).replace('.',',');
             },
 
             cartCardStyle:function($sectionElement,$rightDiv,$image,$btnDelete,$pNumbers,$pNameandValue,$pNameModeinCard){
                 $sectionElement.style.alignItems='center';
-                $sectionElement.style.justifyContent='space-evenly';
+               // $sectionElement.style.justifyContent='space-evenly';
                 $sectionElement.style.flexDirection = 'row';
                 $sectionElement.style.display='flex';                  
                 $sectionElement.style.width ='100%';
@@ -214,12 +254,13 @@
                
                 $rightDiv.style.borderLeft = `4px solid ${modelSelect.color}`;
                 $rightDiv.style.borderRadius = '4px 0px 0px 4px';
-                $rightDiv.style.width = '60%';
-                $rightDiv.style.marginLeft='1px';
-                $rightDiv.style.maxWidth='10rem';
+                $rightDiv.style.width = '234px';
+                $rightDiv.style.marginLeft='14.4px';
+               
                 $rightDiv.style.display='flex';
                 $rightDiv.style.flexDirection='column';
                 
+
                 $pNumbers.style.marginBottom = '6px';
                 $pNumbers.style.marginLeft = '12px';
 
@@ -231,7 +272,8 @@
                 $pNameModeinCard.style.fontSize = '1rem'
                
                 $image.src = './assets/trash.png';
-                $image.style.width='20px';
+                $image.style.width='25px';
+                $image.style.marginLeft = '17px';
                 $btnDelete.style.backgroundColor='#fff';
                 $btnDelete.style.border='none';
             },

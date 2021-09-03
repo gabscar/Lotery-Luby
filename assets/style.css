@@ -153,6 +153,8 @@ main {
 
 .gameSection .gameNumbers button{
     padding: 0.75rem 0.75rem 0.75rem 0.75rem;
+    margin-left: 5px;
+    margin-bottom: 20px;
     border-radius: 6rem;
     background-color: var(--iceGray);    
     color: var(--white);
@@ -223,7 +225,9 @@ main .cart{
     position: relative;
    
 }
-
+main .cart .initialTextCard{
+    margin-top: 4rem;
+}
 main .cart h2{
     margin-top: 2rem;
     margin-left: 1rem;
